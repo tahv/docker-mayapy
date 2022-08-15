@@ -10,4 +10,5 @@ Based on `ubuntu:20.04`. Only support **Maya 2023** (Python 3) at the moment.
 git clone https://github.com/tahv/docker-mayapy
 cd docker-mayapy
 docker build -t tahv/mayapy:2023 .
+docker run -it --rm tahv/mayapy:2023
 ```
