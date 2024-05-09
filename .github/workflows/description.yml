@@ -12,7 +12,7 @@ env:
   IMAGE_NAME: tahv/mayapy
 
 jobs:
-  dockerHubDescription:
+  description:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
