@@ -21,7 +21,7 @@ env:
 
 jobs:
   build-push:
-    name: Push Docker image to Docker Hub
+    name: Push image to Docker Hub
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -50,6 +50,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
+          context: ./${{ input.tag }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
