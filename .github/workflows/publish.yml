@@ -24,9 +24,10 @@ jobs:
     name: Push image to Docker Hub
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
+      attestations: write
       contents: read
       packages: write
-      attestations: write
     steps:
       - uses: actions/checkout@v4
 
@@ -44,6 +45,8 @@ jobs:
           tags: |
             type=raw,value=${{ inputs.tag }}
             type=raw,value=latest,enable=${{ inputs.latest }}
+          labels: |
+            org.opencontainers.image.title=mayapy
 
       - name: Build and push
         id: push
