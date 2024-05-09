@@ -8,10 +8,8 @@ Autodesk Maya images from `ubuntu:22.04`
 
 ## Reference
 
--   **Github**:
-    [https://github.com/tahv/docker-mayapy](https://github.com/tahv/docker-mayapy)
--   **Docker Hub**:
-    [https://hub.docker.com/r/tahv/mayapy](https://hub.docker.com/r/tahv/mayapy)
+- Github: [https://github.com/tahv/docker-mayapy](https://github.com/tahv/docker-mayapy)
+- Docker Hub: [https://hub.docker.com/r/tahv/mayapy](https://hub.docker.com/r/tahv/mayapy)
 
 ## Usage
 
