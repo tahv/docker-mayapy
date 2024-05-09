@@ -1,10 +1,10 @@
 # docker-mayapy
 
-Autodesk Maya images from `ubuntu:22.04`
+Autodesk Maya images on `ubuntu:22.04`.
 
 ## Supported tags
 
-- [2025](https://github.com/tahv/docker-mayapy/blob/main/2025/Dockerfile)
+- [`2025`, `latest`](https://github.com/tahv/docker-mayapy/blob/main/2025/Dockerfile)
 
 ## Reference
 
@@ -15,7 +15,7 @@ Autodesk Maya images from `ubuntu:22.04`
 
 ### Interactive
 
-Run the image in interactive mode.
+Run in interactive mode.
 
 ```bash
 docker run -it --rm tahv/mayapy:2025
@@ -38,6 +38,50 @@ from maya.api import OpenMaya
 # Uninitialize maya before leaving
 maya.standalone.uninitialize()
 exit()
+```
+
+### As Github workflow
+
+The following example uses the latest version of `tahv/mayapy`.
+
+```yaml
+name: Mayapy
+
+on: [push]
+
+jobs:
+   build:
+    name: Mayapy
+    runs-on: ubuntu-latest
+    container:
+      image: tahv/mayapy
+    steps:
+      - uses: actions/checkout@v4
+      - name: Display Maya version
+        run: mayapy -c "import maya.standalone; maya.standalone.initialize(); from maya import cmds; print(cmds.about(v=True))"
+```
+
+The following example uses a matrix for the job to set multiple Maya versions.
+
+```yaml
+name: Mayapy
+
+on: [push]
+
+jobs:
+  build:
+    name: Mayapy ${{ matrix.maya-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        maya-version:
+          - "2025"
+    container:
+      image: tahv/mayapy:${{ matrix.maya-version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Display Maya version
+        run: mayapy -c "import maya.standalone; maya.standalone.initialize(); from maya import cmds; print(cmds.about(v=True))"
 ```
 
 ## Notes

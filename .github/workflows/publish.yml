@@ -21,12 +21,13 @@ env:
 
 jobs:
   build-push:
-    name: Push Docker image to Docker Hub
+    name: Push image to Docker Hub
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
+      attestations: write
       contents: read
       packages: write
-      attestations: write
     steps:
       - uses: actions/checkout@v4
 
@@ -44,18 +45,15 @@ jobs:
           tags: |
             type=raw,value=${{ inputs.tag }}
             type=raw,value=latest,enable=${{ inputs.latest }}
+          labels: |
+            org.opencontainers.image.title=mayapy
 
       - name: Build and push
         id: push
         uses: docker/build-push-action@v5
         with:
           push: true
+          context: ./${{ inputs.tag }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-name: ${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
