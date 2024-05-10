@@ -40,8 +40,6 @@ RUN apt-get update && apt-get install -y \
     libxkbfile1 \
     libcg
 
-RUN mkdir -p /usr/tmp && chmod 777 /usr/tmp
-
 # Download and install Maya.
 # Remove the 'Example/' directory that take ~1G.
 # Symlink mayapy <==> python.
@@ -58,5 +56,11 @@ RUN apt-get update && apt-get install -y alien \
     && rm -r /usr/autodesk/maya/Examples \
     && ln -s /usr/autodesk/maya/bin/mayapy /usr/autodesk/maya/bin/python \
     && apt-get purge -y alien
+
+RUN mkdir -p /usr/tmp && chmod 777 /usr/tmp \
+    && mkdir -p ~/.cache/pip && chmod 777 ~/.cache/pip
+
+RUN wget http://nz2.archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb \
+    && dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
 
 ENV PATH=/usr/autodesk/maya/bin:$PATH
