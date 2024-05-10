@@ -4,7 +4,10 @@ Autodesk Maya images on `ubuntu:22.04`.
 
 ## Supported tags
 
-- [`2025`, `latest`](https://github.com/tahv/docker-mayapy/blob/main/2025/Dockerfile)
+- [`2025`, `latest`](https://github.com/tahv/docker-mayapy/blob/main/2025/Dockerfile) (Python `3.11.14`)
+<!-- - [`2024`](https://github.com/tahv/docker-mayapy/blob/main/2024/Dockerfile) (Python `3.10.8`) -->
+<!-- - [`2023`](https://github.com/tahv/docker-mayapy/blob/main/2023/Dockerfile) (Python `3.9.7`)-->
+<!-- - [`2022`](https://github.com/tahv/docker-mayapy/blob/main/2022/Dockerfile) (Python `3.7.7`) -->
 
 ## Reference
 
@@ -24,7 +27,6 @@ docker run -it --rm tahv/mayapy:2025
 Start `mayapy` inside the container.
 
 ```python
-# Launch mayapy from bash
 $ mayapy
 
 # Initialize maya in standalone mode
@@ -95,16 +97,20 @@ Pre-installed:
 
 `/usr/autodesk/maya/bin` is added to `PATH` and include the following:
 
-- `pip`
+- `pip` (invoke it with `python -m pip`)
 - `mayapy`
-- `python` (is a symlink of `mayapy`)
+- `python` (symlink of `mayapy`)
 
 ### libxp6
 
-In its official [install instruction](https://www.autodesk.com/support/technical/article/caas/tsarticles/ts/5ZZjP3R0R7hzPyhDYkd8IS.html),
-Autodesk instruct to install libxp6 from [ppa:zeehio/libxp](https://launchpad.net/~zeehio/+archive/ubuntu/libxp).
+libxp6 is installed from [ppa:zeehio/libxp](https://launchpad.net/~zeehio/+archive/ubuntu/libxp)
+as recommanded by Autodesk official [install instruction](https://www.autodesk.com/support/technical/article/caas/tsarticles/ts/5ZZjP3R0R7hzPyhDYkd8IS.html).
 
-The archive has removed libxp6 because it is obsolete. The last built is on Ubuntu 22.04.
+The archive has removed libxp6 because it is obsolete and the last built is on Ubuntu 22.04.
+
+### Removed directories
+
+- `/usr/autodesk/maya/Examples` was removed to save ~1G space.
 
 ## Development
 
@@ -113,6 +119,11 @@ Clone the repo, cd into it and build the image from one of the directories.
 ```bash
 git clone https://github.com/tahv/docker-mayapy
 cd docker-mayapy
-docker build --platform linux/amd64 -t mayapy 2025
+docker build --platform linux/amd64 -t tahv/mayapy:2025 2025
 ```
 
+In the container, list the missing dependencies with this command.
+
+```bash
+ldd /usr/autodesk/maya/lib/* 2> /dev/null | sed -nE 's/\s*(.+) => not found/\1/p' | sort --unique
+```

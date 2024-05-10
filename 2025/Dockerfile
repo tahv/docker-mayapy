@@ -1,8 +1,6 @@
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install libxp6 from: https://launchpad.net/~zeehio/+archive/ubuntu/libxp
-# The archive has removed libxp6, there won't be any new build for Ubuntu > 22.04.
 RUN apt-get update \
     && apt-get install -y software-properties-common \
     && add-apt-repository -y ppa:zeehio/libxp || add-apt-repository -y ppa:zeehio/libxp \
@@ -40,9 +38,6 @@ RUN apt-get update && apt-get install -y \
     libxkbfile1 \
     libcg
 
-# Download and install Maya.
-# Remove the 'Example/' directory that take ~1G.
-# Symlink mayapy <==> python.
 RUN apt-get update && apt-get install -y alien \
     && wget --no-check-certificate -O maya.tgz https://efulfillment.autodesk.com/NetSWDLD/2025/MAYA/1AAEB4DA-FE7D-3C8A-A4F4-C217F55C55BA/ESD/Autodesk_Maya_2025_Linux_64bit.tgz \
     && mkdir maya \
