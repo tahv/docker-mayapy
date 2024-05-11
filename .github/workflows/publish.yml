@@ -9,6 +9,7 @@ on:
         required: true
         options:
           - '2025'
+          - '2023'
           - '2022'
       latest:
         description: 'Additionally tag image as latest'
