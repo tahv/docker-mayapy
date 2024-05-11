@@ -1,5 +1,21 @@
 FROM ubuntu:22.04
+
 ENV DEBIAN_FRONTEND=noninteractive
+
+# Install Maya
+RUN apt-get update && apt-get install -y alien wget \
+    && wget --no-check-certificate -O maya.tgz https://efulfillment.autodesk.com/NetSWDLD/2025/MAYA/1AAEB4DA-FE7D-3C8A-A4F4-C217F55C55BA/ESD/Autodesk_Maya_2025_Linux_64bit.tgz \
+    && mkdir maya \
+    && tar -xvf maya.tgz -C maya \
+    && rm maya.tgz \
+    && cd maya/Packages \
+    && alien -cv Maya2*.x86_64.rpm \
+    && dpkg -i *.deb \
+    && cd ../../ \
+    && rm -r maya \
+    && rm -r /usr/autodesk/maya/Examples \
+    && ln -s /usr/autodesk/maya/bin/mayapy /usr/autodesk/maya/bin/python \
+    && apt-get purge -y alien wget
 
 RUN apt-get update \
     && apt-get install -y software-properties-common \
@@ -38,24 +54,11 @@ RUN apt-get update && apt-get install -y \
     libxkbfile1 \
     libcg
 
-RUN apt-get update && apt-get install -y alien \
-    && wget --no-check-certificate -O maya.tgz https://efulfillment.autodesk.com/NetSWDLD/2025/MAYA/1AAEB4DA-FE7D-3C8A-A4F4-C217F55C55BA/ESD/Autodesk_Maya_2025_Linux_64bit.tgz \
-    && mkdir maya \
-    && tar -xvf maya.tgz -C maya \
-    && rm maya.tgz \
-    && cd maya/Packages \
-    && alien -cv Maya2*.x86_64.rpm \
-    && dpkg -i *.deb \
-    && cd ../../ \
-    && rm -r maya \
-    && rm -r /usr/autodesk/maya/Examples \
-    && ln -s /usr/autodesk/maya/bin/mayapy /usr/autodesk/maya/bin/python \
-    && apt-get purge -y alien
+RUN wget -O libssl1.1.deb http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb \
+    && dpkg -i libssl1.1.deb \
+    && rm libssl1.1.deb
 
 RUN mkdir -p /usr/tmp && chmod 777 /usr/tmp \
     && mkdir -p ~/.cache/pip && chmod 777 ~/.cache/pip
-
-RUN wget http://nz2.archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb \
-    && dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
 
 ENV PATH=/usr/autodesk/maya/bin:$PATH
