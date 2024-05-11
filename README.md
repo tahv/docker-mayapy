@@ -4,7 +4,7 @@ Autodesk Maya images on `ubuntu:22.04`.
 
 ## Supported tags
 
-- [`2025`, `latest`](https://github.com/tahv/docker-mayapy/blob/main/2025/Dockerfile) (Python `3.11.14`)
+- [`2025`, `latest`](https://github.com/tahv/docker-mayapy/blob/main/2025/Dockerfile) (Python `3.11.4`)
 <!-- - [`2024`](https://github.com/tahv/docker-mayapy/blob/main/2024/Dockerfile) (Python `3.10.8`) -->
 <!-- - [`2023`](https://github.com/tahv/docker-mayapy/blob/main/2023/Dockerfile) (Python `3.9.7`)-->
 - [`2022`](https://github.com/tahv/docker-mayapy/blob/main/2022/Dockerfile) (Python `3.7.7`)
