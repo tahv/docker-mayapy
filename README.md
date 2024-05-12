@@ -5,7 +5,7 @@ Autodesk Maya images on `ubuntu:22.04`.
 ## Supported tags
 
 - [`2025`, `latest`](https://github.com/tahv/docker-mayapy/blob/main/2025/Dockerfile) (Python `3.11.4`)
-<!-- - [`2024`](https://github.com/tahv/docker-mayapy/blob/main/2024/Dockerfile) (Python `3.10.8`) -->
+- [`2024`](https://github.com/tahv/docker-mayapy/blob/main/2024/Dockerfile) (Python `3.10.8`)
 - [`2023`](https://github.com/tahv/docker-mayapy/blob/main/2023/Dockerfile) (Python `3.9.7`)
 - [`2022`](https://github.com/tahv/docker-mayapy/blob/main/2022/Dockerfile) (Python `3.7.7`)
 
@@ -122,8 +122,14 @@ cd docker-mayapy
 docker build --platform linux/amd64 -t tahv/mayapy:2025 2025
 ```
 
-In the container, list the missing dependencies with this command.
+List missing dependencies.
 
 ```bash
 ldd /usr/autodesk/maya/lib/* 2> /dev/null | sed -nE 's/\s*(.+) => not found/\1/p' | sort --unique
+```
+
+Initialize Maya and load plugins to catch missing dependencies.
+
+```bash
+mayapy -c "import maya.standalone; maya.standalone.initialize(); from maya import cmds; cmds.loadPlugin(a=True)"
 ```
